@@ -86,11 +86,20 @@ class RAGAgent:
         # TO DO: Create the task
         task = Task(
             description = (
-                f"Answer this question about artificial intelligence using ONLY the retrieved passages from the RAG database:{question}"
+                f"Answer this question about artificial intelligence using ONLY the retrieved passages from the RAG database:\n\n"
+                f"{question}"
             ),
             agent = agent,
             expected_output = (
-                "Write the answer in a string format with a short answer containing details from the sources and maybe some next steps and tips."
+                "Write the answer in a string format with this structure:\n\n"
+                "Short answer:\n"
+                "- 1-3 sentences that directly and simply answer the question.\n\n"
+                "Details:\n"
+                "- 3-6 bullet points explaining the key ideas in a clear, friendly way.\n\n"
+                "From the sources:\n"
+                "- 2-4 bullet points that say what comes from the retrieved passages (e.g., 'The sources say...').\n\n"
+                "Next steps or tips:\n"
+                "- 1-3 bullet points suggesting what the user could read, check, or think about next."
             )
         )
 
