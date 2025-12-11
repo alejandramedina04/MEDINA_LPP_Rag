@@ -24,13 +24,13 @@ class RAGAgent:
         # ---------------------------------------------------------------------
         @tool("Query RAG Database")
         def query_rag_db(query: str) -> str:
-            """Search the vector database containing customized texts.
+            """Search the vector database containing curated sources about artificial intelligence.
             
             Args:
-                query: Search query about topic.
+                query: Search query about artificial intelligence (its uses, benefits, risks, ethics, and black-box issues).
                 
             Returns:
-                Relevant passages from the database
+                Relevant passages from the database for the model to use when answering. 
             """
             try:
                 results = self.db.query(query)
@@ -69,9 +69,13 @@ class RAGAgent:
         
 
         agent = Agent(
-            role='Friends Content Assistant',
-            goal='Answer questions about Friends using the database',
-            backstory='You are an expert who has access to a database with content about Friends.',
+            role='Artificial Intelligence Content Assistant',
+            goal='Answer questions about artificial intelligence using the vector database.',
+            backstory=(
+                "You are an expert on artificial intelligence with access to a database of "
+                "curated sources about AI's uses, benefits, risks, black-box behavior, and ethics. "
+                "Base your answers only on the retrieved passages, and if the information "
+                "is not present, say that it is not covered in the sources."),
             tools=[query_tool],
             llm=llm,
             verbose=True, # Shows what the agent is doing
@@ -80,10 +84,25 @@ class RAGAgent:
         )
         
         # TO DO: Create the task
-        task = Task(description = question, 
-                    agent = agent,
-                    expected_output = "A Ccmprehensive answer based on the database output")
-        
+        task = Task(
+            description = (
+                f"Answer this question about artificial intelligence using ONLY the retrieved passages from the RAG database:\n\n"
+                f"{question}"
+            ),
+            agent = agent,
+            expected_output = (
+                "Write the answer in plain text with this structure:\n\n"
+                "Short answer:\n"
+                "- 1-3 sentences that directly and simply answer the question.\n\n"
+                "Details:\n"
+                "- 3-6 bullet points explaining the key ideas in a clear, friendly way.\n\n"
+                "From the sources:\n"
+                "- 2-4 bullet points that say what comes from the retrieved passages (e.g., 'The sources say...').\n\n"
+                "Next steps or tips:\n"
+                "- 1-3 bullet points suggesting what the user could read, check, or think about next."
+            )
+        )
+
         # TO DO: Create the Crew and run it
         crew = Crew(agents = [agent],
                     tasks = [task],

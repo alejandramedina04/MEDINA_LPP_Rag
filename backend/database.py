@@ -1,5 +1,5 @@
 # =============================================================================
-# Database module for Chronicles RAG Assistant
+# Database module for AI RAG Assistant
 # =============================================================================
 # This file handles ALL database operations. The rest of the app doesn't
 # need to know anything about DuckDB or embeddings—it just calls db.query()
@@ -47,10 +47,10 @@ class RAGDatabase:
     # TO DO: Update query() method
     def query(self, query_text: str, top_k: int = DEFAULT_TOP_K) -> list[dict]:
         """
-        Query the database for relevant passages.
+        Query the AI RAG database for relevant passages about artificial intelligence.
         
         Args:
-            query_text: The search query.
+            query_text: The search query (about AI uses, risks, ethics, black-box issues, etc.).
             top_k: Number of results to return.
             
         Returns:
@@ -65,7 +65,7 @@ class RAGDatabase:
             query_embedding = self.model.encode(query_text).tolist()
             
             # TO DO: Update table name
-            # Execute vector search
+            # Execute vector search over stored AI document chunks
             # Return top k most similar passages
             # Note: We cast the parameter to FLOAT[384] to match the embedding dimension
             results = conn.execute(f"""
@@ -80,7 +80,7 @@ class RAGDatabase:
             
             # TO DO: Format results for the agent
             # Each result row is (text, similarity_score)
-            return({"text":row[0], "similarity":float(row[1])} for row in results)
+            return ({"text":row[0], "similarity":float(row[1])} for row in results)
             
         except Exception as e:
             raise Exception(f"Database query failed: {str(e)}")
