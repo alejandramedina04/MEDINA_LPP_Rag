@@ -120,7 +120,7 @@ with st.sidebar:
 # -----------------------------------------------------------------------------
 # Main App Header
 # -----------------------------------------------------------------------------
-st.title("📖 AI RAG Assistant")
+st.title("🤖 AI Benefits and Risks Assistant")
 st.markdown("Ask questions about artificial intelligence and receive AI-powered answers based on curated content.")
 
 
